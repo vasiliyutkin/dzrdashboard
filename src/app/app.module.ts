@@ -37,7 +37,7 @@ export class AppModule {
   constructor(private http: HttpClient) {
     this.http
       .get<any>(
-        'https://jenkins.doozer.it/job/backend_builds/job/account/job/dev/lastStableBuild/api/json'
+        '/jenkins/job/backend_builds/job/account/job/dev/lastStableBuild/api/json'
       )
       .subscribe((i) => console.log(i));
   }
