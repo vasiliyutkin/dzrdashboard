@@ -34,14 +34,40 @@ import { HttpClient } from '@angular/common/http';
   bootstrap: [AppComponent],
 })
 export class AppModule {
+  folderNames: [string];
+
   constructor(private http: HttpClient) {
+    this.getJenkisFirstLvlJobs();
+  }
+
+  getJenkisFirstLvlJobs() {
     this.http
-      .get<any>(
-        '/jenkins/job/frontend_builds/api/json',
-        {
-          headers: new HttpHeaders({Authorization: 'Basic am9iX3J1bm5lcjoxMWI2MjYzY2Y5NmEzY2Y0NTA4ZmMwNzBjOWZlMWIzNTI1'})
-        }
+      .get<any>('/jenkins/api/json', {
+        headers: new HttpHeaders({
+          Authorization:
+            'Basic am9iX3J1bm5lcjoxMWI2MjYzY2Y5NmEzY2Y0NTA4ZmMwNzBjOWZlMWIzNTI1',
+        }),
+      })
+      .subscribe(
+        (i) =>
+          (this.folderNames = i.jobs
+            .map((s) => s.name)
+            .filter((s) => s.includes('builds')))
+      );
+  }
+
+  getJenkisSecondLvlJobs() {
+    Promise.all(
+      this.folderNames.map((i) =>
+        this.http
+          .get<any>('/jenkins/job/${i}/api/json ', {
+            headers: new HttpHeaders({
+              Authorization:
+                'Basic am9iX3J1bm5lcjoxMWI2MjYzY2Y5NmEzY2Y0NTA4ZmMwNzBjOWZlMWIzNTI1',
+            }),
+          })
+          .subscribe((i) => i)
       )
-      .subscribe((i) => console.log(i));
+    );
   }
 }
