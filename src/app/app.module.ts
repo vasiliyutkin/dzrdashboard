@@ -12,11 +12,12 @@ import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 
+import { HttpClientModule } from '@angular/common/http';
+
+import { HttpClient } from '@angular/common/http';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -27,8 +28,17 @@ import { MatCardModule } from '@angular/material/card';
     MatListModule,
     MatInputModule,
     MatCardModule,
+    HttpClientModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private http: HttpClient) {
+    this.http
+      .get<any>(
+        'https://jenkins.doozer.it/job/backend_builds/job/account/job/dev/lastStableBuild/api/json'
+      )
+      .subscribe((i) => console.log(i));
+  }
+}
