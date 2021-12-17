@@ -12,7 +12,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpHeaders } from '@angular/common/http';
 
 import { HttpClient } from '@angular/common/http';
 
@@ -37,7 +37,10 @@ export class AppModule {
   constructor(private http: HttpClient) {
     this.http
       .get<any>(
-        '/jenkins/job/backend_builds/job/account/job/dev/lastStableBuild/api/json'
+        '/jenkins/job/frontend_builds/api/json',
+        {
+          headers: new HttpHeaders({Authorization: 'Basic am9iX3J1bm5lcjoxMWI2MjYzY2Y5NmEzY2Y0NTA4ZmMwNzBjOWZlMWIzNTI1'})
+        }
       )
       .subscribe((i) => console.log(i));
   }

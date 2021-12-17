@@ -2,6 +2,9 @@
     "/jenkins": {
         "target": "https://jenkins.doozer.it",
         "secure": true,
-        "changeOrigin": true
+        "changeOrigin": true,
+        "pathRewrite": {
+            "^/jenkins": ""
+        }
     }
 }
